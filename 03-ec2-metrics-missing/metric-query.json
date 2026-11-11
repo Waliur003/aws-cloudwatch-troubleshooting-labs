@@ -1,0 +1,20 @@
+[
+  {
+    "Id": "memory_usage",
+    "MetricStat": {
+      "Metric": {
+        "Namespace": "CWAgent",
+        "MetricName": "mem_used_percent",
+        "Dimensions": [
+          {
+            "Name": "InstanceId",
+            "Value": ""
+          }
+        ]
+      },
+      "Period": 60,
+      "Stat": "Average"
+    },
+    "ReturnData": true
+  }
+]

@@ -1,0 +1,21 @@
+{
+  "agent": {
+    "region": "us-east-1",
+    "metrics_collection_interval": 60,
+    "debug": true
+  },
+  "metrics": {
+    "namespace": "CWAgent",
+    "append_dimensions": {
+      "InstanceId": "${aws:InstanceId}"
+    },
+    "metrics_collected": {
+      "mem": {
+        "measurement": [
+          "used_percent"
+        ],
+        "metrics_collection_interval": 60
+      }
+    }
+  }
+}
