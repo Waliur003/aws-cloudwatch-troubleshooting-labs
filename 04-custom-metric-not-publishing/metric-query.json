@@ -1,0 +1,24 @@
+[
+  {
+    "Id": "payment_failures",
+    "MetricStat": {
+      "Metric": {
+        "Namespace": "CloudWatchLab04/Payments",
+        "MetricName": "PaymentFailures",
+        "Dimensions": [
+          {
+            "Name": "Environment",
+            "Value": "Lab04"
+          },
+          {
+            "Name": "Service",
+            "Value": "PaymentAPI"
+          }
+        ]
+      },
+      "Period": 60,
+      "Stat": "Sum"
+    },
+    "ReturnData": true
+  }
+]
