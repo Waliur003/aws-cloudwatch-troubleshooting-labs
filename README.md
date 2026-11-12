@@ -41,30 +41,30 @@ After completing these labs, I will be able to:
 
 ## 2. Technologies Used
 
-| Technology | Purpose |
-|---|---|
-| Amazon CloudWatch | Monitoring and observability |
-| CloudWatch Logs | Centralized log collection and investigation |
-| CloudWatch Agent | Collecting logs and OS-level metrics |
-| CloudWatch Metrics | Monitoring infrastructure and applications |
-| CloudWatch Alarms | Detecting metric conditions |
-| CloudWatch Logs Insights | Querying and analyzing logs |
-| Amazon EC2 | Simulated monitored infrastructure |
-| Amazon SNS | Alarm notifications |
-| AWS IAM | Monitoring permissions and instance roles |
-| AWS Systems Manager | EC2 management and troubleshooting |
-| AWS CLI v2 | Resource management and investigation |
-| Linux | Operating system troubleshooting |
-| Bash | Automation and troubleshooting commands |
-| Python | Custom metric generation and testing |
-| JSON | CloudWatch Agent and monitoring configuration |
-| Git and GitHub | Version control and documentation |
+| **Technology**           | **Purpose**                                   |
+| ------------------------ | --------------------------------------------- |
+| Amazon CloudWatch        | Monitoring and observability                  |
+| CloudWatch Logs          | Centralized log collection and investigation  |
+| CloudWatch Agent         | Collecting logs and OS-level metrics          |
+| CloudWatch Metrics       | Monitoring infrastructure and applications    |
+| CloudWatch Alarms        | Detecting metric conditions                   |
+| CloudWatch Logs Insights | Querying and analyzing logs                   |
+| Amazon EC2               | Simulated monitored infrastructure            |
+| Amazon SNS               | Alarm notifications                           |
+| AWS IAM                  | Monitoring permissions and instance roles     |
+| AWS Systems Manager      | EC2 management and troubleshooting            |
+| AWS CLI v2               | Resource management and investigation         |
+| Linux                    | Operating system troubleshooting              |
+| Bash                     | Automation and troubleshooting commands       |
+| Python                   | Custom metric generation and testing          |
+| JSON                     | CloudWatch Agent and monitoring configuration |
+| Git and GitHub           | Version control and documentation             |
 
 ---
 
 ## 3. Repository Structure
 
-```text
+```
 aws-cloudwatch-troubleshooting-labs/
 │
 ├── README.md
@@ -98,6 +98,7 @@ aws-cloudwatch-troubleshooting-labs/
 │
 └── 10-cloudwatch-logs-insights-investigation/
     └── README.md
+
 ```
 
 Each lab folder will contain its own README, supporting configuration files, scripts, and sanitized troubleshooting evidence as needed.
@@ -108,18 +109,18 @@ Individual lab documentation will be added after completing the practical troubl
 
 ## 4. Troubleshooting Lab Roadmap
 
-| Lab | Troubleshooting Scenario | Difficulty |
-|---|---|---|
-| 01 | CloudWatch Logs Not Appearing | Beginner |
-| 02 | CloudWatch Agent Not Running | Beginner |
-| 03 | EC2 Metrics Missing | Beginner–Intermediate |
-| 04 | Custom Metric Not Publishing | Intermediate |
-| 05 | Alarm Stuck in Insufficient Data | Intermediate |
-| 06 | Alarm Threshold Misconfiguration | Intermediate |
-| 07 | Alarm Notification Not Delivered | Intermediate |
-| 08 | CloudWatch Logs Retention Misconfiguration | Intermediate |
-| 09 | Metric Filter Not Matching | Intermediate–Advanced |
-| 10 | CloudWatch Logs Insights Investigation | Advanced |
+| **Lab** | **Troubleshooting Scenario**               | **Difficulty**        |
+| ------- | ------------------------------------------ | --------------------- |
+| 01      | CloudWatch Logs Not Appearing              | Beginner              |
+| 02      | CloudWatch Agent Not Running               | Beginner              |
+| 03      | EC2 Metrics Missing                        | Beginner–Intermediate |
+| 04      | Custom Metric Not Publishing               | Intermediate          |
+| 05      | Alarm Stuck in Insufficient Data           | Intermediate          |
+| 06      | Alarm Threshold Misconfiguration           | Intermediate          |
+| 07      | Alarm Notification Not Delivered           | Intermediate          |
+| 08      | CloudWatch Logs Retention Misconfiguration | Intermediate          |
+| 09      | Metric Filter Not Matching                 | Intermediate–Advanced |
+| 10      | CloudWatch Logs Insights Investigation     | Advanced              |
 
 ---
 
@@ -203,6 +204,25 @@ Individual lab documentation will be added after completing the practical troubl
 - Period configuration.
 
 **Expected Outcome:** The alarm receives valid datapoints and transitions according to its configured evaluation rules.
+
+**Quick Investigation Checklist:**
+
+1. Confirm the AWS Region, metric namespace, metric name, and every dimension match the alarm configuration.
+2. Check whether the metric has recent datapoints in the alarm evaluation window.
+3. Verify that the metric period and statistic are appropriate for the data being published.
+4. Review `EvaluationPeriods`, `DatapointsToAlarm`, and `TreatMissingData` rather than assuming missing data always means a failed agent.
+5. Inspect alarm state history to distinguish missing telemetry from a threshold or configuration issue.
+6. After correcting the root cause, wait for enough new datapoints and verify the alarm evaluates normally.
+
+**Useful Read-Only Commands:**
+
+```bash
+aws cloudwatch describe-alarms --alarm-names "ALARM_NAME" --region "AWS_REGION"
+aws cloudwatch describe-alarm-history --alarm-name "ALARM_NAME" --region "AWS_REGION"
+aws cloudwatch list-metrics --namespace "METRIC_NAMESPACE" --region "AWS_REGION"
+```
+
+Replace the quoted placeholders with the actual alarm, Region, and metric namespace. For detailed data validation, use `aws cloudwatch get-metric-data` with the exact metric dimensions and appropriate start/end times.
 
 ### Lab 06 — Alarm Threshold Misconfiguration
 
@@ -289,7 +309,7 @@ Individual lab documentation will be added after completing the practical troubl
 
 ## 6. AWS Monitoring Architecture
 
-```text
+```
                       AWS Infrastructure
                               |
                   ------------------------
@@ -330,6 +350,7 @@ Individual lab documentation will be added after completing the practical troubl
                               |
                               v
                           Remediation
+
 ```
 
 This architecture demonstrates how AWS monitoring components work together to support operational visibility and incident response.
@@ -378,7 +399,7 @@ Record the incident symptoms, investigation, root cause, remediation, verificati
 
 ### CloudWatch Logs
 
-```bash
+```
 aws logs describe-log-groups
 aws logs describe-log-streams
 aws logs filter-log-events
@@ -388,7 +409,7 @@ aws logs put-retention-policy
 
 ### CloudWatch Metrics
 
-```bash
+```
 aws cloudwatch list-metrics
 aws cloudwatch get-metric-statistics
 aws cloudwatch get-metric-data
@@ -397,7 +418,7 @@ aws cloudwatch put-metric-data
 
 ### CloudWatch Alarms
 
-```bash
+```
 aws cloudwatch describe-alarms
 aws cloudwatch describe-alarm-history
 aws cloudwatch put-metric-alarm
@@ -406,7 +427,7 @@ aws cloudwatch delete-alarms
 
 ### CloudWatch Metric Filters
 
-```bash
+```
 aws logs describe-metric-filters
 aws logs test-metric-filter
 aws logs put-metric-filter
@@ -414,7 +435,7 @@ aws logs put-metric-filter
 
 ### CloudWatch Logs Insights
 
-```bash
+```
 aws logs start-query
 aws logs get-query-results
 aws logs stop-query
@@ -422,7 +443,7 @@ aws logs stop-query
 
 ### Amazon SNS
 
-```bash
+```
 aws sns list-topics
 aws sns list-subscriptions
 aws sns get-topic-attributes
@@ -431,7 +452,7 @@ aws sns publish
 
 ### EC2 and Systems Manager
 
-```bash
+```
 aws ec2 describe-instances
 aws ec2 describe-instance-status
 aws ssm start-session
@@ -445,44 +466,44 @@ Commands shown here are reference examples. Each lab provides complete arguments
 
 ### Check CloudWatch Agent Status
 
-```bash
+```
 sudo systemctl status amazon-cloudwatch-agent
 ```
 
 ### Inspect Agent Logs
 
-```bash
+```
 sudo tail -n 50 \
   /opt/aws/amazon-cloudwatch-agent/logs/amazon-cloudwatch-agent.log
 ```
 
 ### Inspect Service Logs
 
-```bash
+```
 sudo journalctl -u amazon-cloudwatch-agent --no-pager
 ```
 
 ### Check Agent Processes
 
-```bash
+```
 ps aux | grep amazon-cloudwatch-agent
 ```
 
 ### Check Local Application Logs
 
-```bash
+```
 sudo tail -n 50 /var/log/myapp/application.log
 ```
 
 ### Search for Errors
 
-```bash
+```
 grep -i "error" /var/log/myapp/application.log
 ```
 
 ### Inspect System Resources
 
-```bash
+```
 free -h
 df -h
 top
@@ -537,12 +558,13 @@ Namespaces organize CloudWatch metrics.
 
 Common examples:
 
-```text
+```
 AWS/EC2
 AWS/RDS
 AWS/ApplicationELB
 CWAgent
 Custom/Application
+
 ```
 
 ### Dimensions
@@ -551,28 +573,40 @@ Dimensions identify specific metric series.
 
 Examples:
 
-```text
+```
 InstanceId
 AutoScalingGroupName
 Environment
 ApplicationName
+
 ```
 
 A metric with the correct namespace and name but different dimensions is a different metric series.
+
+### Alarm Investigation: Fast Decision Guide
+
+| **Observation** | **What to Check First** | **Likely Next Action** |
+| --- | --- | --- |
+| Alarm shows `INSUFFICIENT_DATA` | Recent datapoints, dimensions, period, and missing-data treatment | Correct telemetry or evaluation settings and verify new datapoints |
+| Alarm remains `OK` during a known problem | Statistic, threshold, comparison operator, and evaluation periods | Correct the alarm definition and test with valid metric data |
+| Alarm reaches `ALARM`, but no message arrives | Alarm actions, SNS topic, subscription confirmation, and delivery status | Repair the notification path and test delivery |
+| Metric is visible but alarm uses no data | Namespace, dimensions, Region, and selected metric statistic | Make the alarm reference the intended metric series |
+
+Treat this table as a starting point, not a substitute for examining CloudWatch alarm history and underlying metric data.
 
 ---
 
 ## 11. CloudWatch Agent vs. Native EC2 Metrics
 
-| Feature | Native EC2 Metrics | CloudWatch Agent |
-|---|---|---|
-| CPU Utilization | Yes | Additional CPU metrics |
-| Network Traffic | Yes | Additional network metrics |
-| Memory Usage | No by default | Yes |
-| Filesystem Usage | No by default | Yes |
-| Application Logs | No | Yes |
-| Agent Installation | Not required | Required |
-| Custom OS-Level Monitoring | Limited | Supported |
+| **Feature**                | **Native EC2 Metrics** | **CloudWatch Agent**       |
+| -------------------------- | ---------------------- | -------------------------- |
+| CPU Utilization            | Yes                    | Additional CPU metrics     |
+| Network Traffic            | Yes                    | Additional network metrics |
+| Memory Usage               | No by default          | Yes                        |
+| Filesystem Usage           | No by default          | Yes                        |
+| Application Logs           | No                     | Yes                        |
+| Agent Installation         | Not required           | Required                   |
+| Custom OS-Level Monitoring | Limited                | Supported                  |
 
 The CloudWatch Agent allows engineers to collect operating-system and application telemetry beyond default EC2 metrics.
 
@@ -620,13 +654,14 @@ Each lab includes cleanup instructions to prevent unnecessary resource charges.
 
 Each completed lab may contain sanitized evidence such as:
 
-```text
+```
 evidence/
 ├── before-configuration.json
 ├── after-configuration.json
 ├── error-output.txt
 ├── verification-output.txt
 └── screenshots/
+
 ```
 
 Evidence should demonstrate:
