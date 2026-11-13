@@ -1,0 +1,8 @@
+[
+  {
+    "metricName": "ApplicationErrorCount",
+    "metricNamespace": "CloudWatchLab09/Application",
+    "metricValue": "1",
+    "unit": "Count"
+  }
+]
