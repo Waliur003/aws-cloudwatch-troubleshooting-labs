@@ -1,0 +1,4 @@
+fields @timestamp, phase, endpoint, status
+| filter status >= 500
+| stats count(*) as failed_requests by phase, status
+| sort failed_requests desc

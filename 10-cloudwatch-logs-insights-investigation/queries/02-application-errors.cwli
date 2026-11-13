@@ -1,0 +1,4 @@
+fields @timestamp, level, error_code, component, request_id, status, latency_ms
+| filter level = "ERROR"
+| sort @timestamp asc
+| limit 50

@@ -1,0 +1,9 @@
+fields phase, status, latency_ms
+| filter ispresent(latency_ms)
+| stats
+    count(*) as requests,
+    avg(latency_ms) as average_latency_ms,
+    max(latency_ms) as maximum_latency_ms,
+    pct(latency_ms, 95) as p95_latency_ms
+  by phase
+| sort average_latency_ms desc

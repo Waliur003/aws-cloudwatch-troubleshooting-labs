@@ -1,0 +1,8 @@
+fields phase, status, latency_ms
+| filter phase = "recovery" and ispresent(status)
+| stats
+    count(*) as total_requests,
+    avg(latency_ms) as average_latency_ms,
+    max(latency_ms) as maximum_latency_ms
+  by status
+| sort status asc

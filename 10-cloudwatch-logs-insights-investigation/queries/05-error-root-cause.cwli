@@ -1,0 +1,4 @@
+fields @timestamp, error_code, component, status
+| filter level = "ERROR"
+| stats count(*) as occurrences by error_code, component
+| sort occurrences desc

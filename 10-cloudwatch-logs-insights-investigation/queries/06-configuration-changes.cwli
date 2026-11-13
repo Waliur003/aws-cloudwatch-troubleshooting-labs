@@ -1,0 +1,10 @@
+fields
+    @timestamp,
+    phase,
+    change_id,
+    component,
+    old_pool_limit,
+    new_pool_limit,
+    message
+| filter event = "config_change"
+| sort @timestamp asc

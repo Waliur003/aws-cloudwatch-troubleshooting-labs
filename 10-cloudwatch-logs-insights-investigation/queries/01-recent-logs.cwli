@@ -1,0 +1,3 @@
+fields @timestamp, level, phase, event, status, latency_ms
+| sort @timestamp desc
+| limit 30
